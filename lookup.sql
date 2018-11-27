@@ -10,6 +10,8 @@ prompt ***** Welcome to iSell! *****
 prompt ****** SHOW ORDER DETAIL ******
 prompt 
 
+column orderAmount heading 'Amount Ordered' format $9,999.99
+
 accept VorderNum prompt 'Please enter the Order Number: '
 
 select 'Order Number: '||orderNum

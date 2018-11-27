@@ -1,5 +1,5 @@
-set echo off
-set feedback off
+set echo on
+set feedback on 
 set verify off
 set heading off
 
@@ -20,7 +20,7 @@ create table Products(
 	availableUnits number(4));
 
 create table ReasonCode(
-	ReasonCode number(10) PRIMARY KEY,
+	ReasonCode number(1) PRIMARY KEY,
 	ReasonDescription varchar(19));
 
 create table Customers(
@@ -73,7 +73,10 @@ insert into Customers values(104,'Solo','Han','5872 Park Street', 'Hoth','TN',68
 insert into Customers values(105,'Skywalker','Luke','6547 Esperanza','Tatooine','FL',98716,6589578724);
 
 /* Insert Orders */
+insert into Orders values(999,'20-MAR-2018',101,'p3',45,43,5.00,225.00,'30-MAR-2018',525,'Shipped',Null);
+insert into Orders values(1000,'23-MAR-2018',105,'p1',45,43,5.00,225.00,'28-MAR-2018',215,'Cancelled',1);
 insert into Orders values(1001,'25-MAR-2018',102,'p2',20,18,2.00,40.00,'28-MAR-2018',36.00,'Shipped',NULL);
+insert into Orders values(1002,'26-MAR-2018',103,'p1',32,30,4.00,242.00,'27-MAR-2018',235,'Shipped',Null);
 
 /* Counter */
-insert into Counter values(1001);
+insert into Counter values(1003);

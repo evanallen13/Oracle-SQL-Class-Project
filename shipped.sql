@@ -1,5 +1,5 @@
-set echo off
-set feedback off
+set echo on
+set feedback on
 set verify off
 set heading off
 
@@ -38,6 +38,7 @@ update Orders
 	shipDate = sysdate,
 	shipAmount = (&VqtyShipped*(select UnitPrice from Orders where &VorderNum = orderNum));
 
+commit;
 
 select 'Order Status: '||orderStatus
 	||chr(10)||'Date Shipped: '||shipDate
