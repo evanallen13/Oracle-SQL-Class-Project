@@ -10,8 +10,6 @@ prompt ***** Welcome to iSell! *****
 prompt ****** SHOW ORDER DETAIL ******
 prompt 
 
-column orderAmount heading 'Amount Ordered' format $9,999.99
-
 accept VorderNum prompt 'Please enter the Order Number: '
 
 select 'Order Number: '||orderNum
@@ -31,9 +29,9 @@ select 'Order Number: '||orderNum
 	||chr(10)||'Date Shipped: '||shipDate
 	||chr(10)||' '
 	||chr(10)||'Quantity Ordered: '||orderQty
-	||chr(10)||'Amount Ordered: '||orderAmount
+	||chr(10)||'Amount Ordered: '||'$'||orderAmount
 	||chr(10)||'Quantity Shipped: '||shipQty
-	||chr(10)||'Amount Shipped: '||shipAmount
+	||chr(10)||'Amount Shipped: '||'$'||shipAmount
 	from Orders,Customers,Products 
 	where Orders.orderNum = &VorderNum
 	and Orders.CustomerNum = Customers.CustomerNum

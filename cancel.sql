@@ -1,5 +1,5 @@
-set echo on
-set feedback on
+set echo off
+set feedback off
 set verify off
 set heading off
 
