@@ -33,10 +33,12 @@ prompt *************************
 
 accept VqtyShipped prompt 'Quantity Shipped: '
 
+/* Fix this */
 update Orders 
 	set orderStatus = 'Shipped',
 	shipDate = sysdate,
-	shipAmount = (&VqtyShipped*(select UnitPrice from Orders where &VorderNum = orderNum));
+	shipAmount = (&VqtyShipped*(select UnitPrice from Orders where &VorderNum = orderNum))
+	where orderNum = &VorderNum;
 
 commit;
 

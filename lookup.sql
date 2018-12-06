@@ -29,9 +29,9 @@ select 'Order Number: '||orderNum
 	||chr(10)||'Date Shipped: '||shipDate
 	||chr(10)||' '
 	||chr(10)||'Quantity Ordered: '||orderQty
-	||chr(10)||'Amount Ordered: '||'$'||orderAmount
+	||chr(10)||'Amount Ordered: '||ltrim(to_char(orderAmount,'$9,999.99'))
 	||chr(10)||'Quantity Shipped: '||shipQty
-	||chr(10)||'Amount Shipped: '||'$'||shipAmount
+	||chr(10)||'Amount Shipped: '||ltrim(to_char(shipAmount,'$9,999.99'))
 	from Orders,Customers,Products 
 	where Orders.orderNum = &VorderNum
 	and Orders.CustomerNum = Customers.CustomerNum

@@ -24,5 +24,5 @@ select Orders.reasonCode,
 	from Orders,ReasonCode
 	where orderStatus = 'Cancelled'
 	and Orders.ReasonCode = ReasonCode.ReasonCode
-	and (trunc(sysdate)-trunc(orderDate)) <= &VnumDays
+	and (trunc(sysdate)-trunc(orderDate)+1) <= &VnumDays
 	group by Orders.reasonCode,ReasonDescription;
