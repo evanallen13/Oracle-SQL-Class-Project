@@ -1,0 +1,34 @@
+
+***** Welcome to iSell! *****
+****** PLACE AN ORDER *******
+
+Today's Date: 13-DEC-18                                                                                                                                                                                                                                                                                     
+
+Enter the Customer Number: 103
+
+                                                                                                                                                                                                                                                                                                            
+Customer Name: Fett, Boba                                                                                                                                                                                                                                                                                   
+	Shipping Address: 354 Second Ave.                                                                                                                                                                                                                                                                          
+	City, State Zip: Mos Eisley, FL84576                                                                                                                                                                                                                                                                       
+	Phone: (584)468-8842                                                                                                                                                                                                                                                                                       
+                                                                                                                                                                                                                                                                                                            
+Enter Product Search Keyword: log
+
+                          Unit           Warehouse Available                                                                                                                                                                                                                                                
+p#  PName                Price Type          Units     Units                                                                                                                                                                                                                                                
+--- --------------- ---------- --------- --------- ---------                                                                                                                                                                                                                                                
+p6  Logitech Mouse      $12.00 Promo           400       350                                                                                                                                                                                                                                                
+
+Enter the Item Number: p6
+
+Item Number: p6                                                                                                                                                                                                                                                                                             
+Item Description: Logitech Mouse                                                                                                                                                                                                                                                                            
+Unit Price: $12.00                                                                                                                                                                                                                                                                                          
+                                                                                                                                                                                                                                                                                                            
+Enter the quantity ordered: 32
+
+Amount Ordered: $384.00                                                                                                                                                                                                                                                                                     
+
+***** Order Status: Open                                                                                                                                                                                                                                                                                    
+***** Order Number is ---->	1019                                                                                                                                                                                                                                                                            
+                                                                                                                                                                                                                                                                                                            

@@ -1,0 +1,36 @@
+
+***** Welcome to iSell! *****
+***** CANCEL ORDER *****
+
+
+Today's date: 18-DEC-18                                                         
+Please enter the Order Number: 1013
+
+
+Order Number: 1013                                                              
+Date Ordered: 04-DEC-18                                                         
+Order Status: Open                                                              
+Customer Number: 103                                                            
+	Fett, Boba                                                                     
+	354 Second Ave.                                                                
+	Mos Eisley, FL 84576                                                           
+	(584)468-8424                                                                  
+Item Number: p4                                                                 
+	Item Description: Coffee Cup                                                   
+	Unit Price: 5                                                                  
+Quantity Ordered: 6                                                             
+Amount Ordered: 30                                                              
+
+                                                                                
+********************************************
+
+Cancel Reason Code                                                              
+------ -------------------                                                      
+     1 No longer need                                                           
+     2 Found better price                                                       
+     3 Too long to deliver                                                      
+     4 Others                                                                   
+
+Please enter a reason code: 3
+
+This order is now CANCELLED. Thank you for your business.                       

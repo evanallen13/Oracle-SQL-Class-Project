@@ -1,0 +1,36 @@
+SQL> 
+SQL> column reasonCode heading 'Reason|Code' format 9999
+SQL> column ReasonDescription heading 'Reason|Description' format a20
+SQL> column numberCancelled heading 'No of |Orders' format 9,999
+SQL> column qtyCancelled heading 'Total |Units' format 9,999
+SQL> column amountCancelled heading 'Total |Amount' format $9,999.99
+SQL> 
+SQL> prompt ****** Cancel Reason Code Analysis ******
+****** Cancel Reason Code Analysis ******
+SQL> 
+SQL> accept VnumDays prompt 'Please enter past number of days to query: '
+Please enter past number of days to query: 30
+SQL> 
+SQL> set heading on
+SQL> select Orders.reasonCode,
+  2  	     ReasonDescription,
+  3  	     count(orderNum) AS numberCancelled,
+  4  	     sum(orderQty) AS qtyCancelled,
+  5  	     sum(orderAmount) AS amountCancelled
+  6  	     from Orders,ReasonCode
+  7  	     where orderStatus = 'Cancelled'
+  8  	     and Orders.ReasonCode = ReasonCode.ReasonCode
+  9  	     and (trunc(sysdate)-trunc(orderDate)+1) <= &VnumDays
+ 10  	     group by Orders.reasonCode,ReasonDescription;
+old   9: 	and (trunc(sysdate)-trunc(orderDate)+1) <= &VnumDays
+new   9: 	and (trunc(sysdate)-trunc(orderDate)+1) <= 30
+
+Reason Reason               No of  Total      Total                             
+  Code Description          Orders  Units     Amount                            
+------ -------------------- ------ ------ ----------                            
+     3 Too long to deliver       1      6     $30.00                            
+
+1 row selected.
+
+SQL> 
+SQL> spool off

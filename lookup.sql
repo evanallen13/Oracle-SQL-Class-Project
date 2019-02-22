@@ -1,9 +1,10 @@
-set echo off
-set feedback off
-set verify off
-set heading off
+set echo on
+set feedback on
+set verify on
+set heading on
 
 /* start C:\Users\evana\Desktop\project\lookup.sql */
+spool C:\Users\evana\Desktop\project\spool\lookup.txt
 
 prompt 
 prompt ***** Welcome to iSell! *****
@@ -36,3 +37,5 @@ select 'Order Number: '||orderNum
 	where Orders.orderNum = &VorderNum
 	and Orders.CustomerNum = Customers.CustomerNum
 	and Orders.productNum = Products.productNum;
+
+spool off

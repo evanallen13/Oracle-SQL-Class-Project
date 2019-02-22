@@ -1,9 +1,11 @@
-set echo off
-set feedback off
-set verify off
-set heading off
+set echo on
+set feedback on
+set verify on
+set heading on
 
 /* start C:\Users\evana\Desktop\project\whyX.sql */
+
+spool C:\Users\evana\Desktop\project\spool\whyX.txt
 
 column reasonCode heading 'Reason|Code' format 9999
 column ReasonDescription heading 'Reason|Description' format a20
@@ -26,3 +28,5 @@ select Orders.reasonCode,
 	and Orders.ReasonCode = ReasonCode.ReasonCode
 	and (trunc(sysdate)-trunc(orderDate)+1) <= &VnumDays
 	group by Orders.reasonCode,ReasonDescription;
+
+spool off

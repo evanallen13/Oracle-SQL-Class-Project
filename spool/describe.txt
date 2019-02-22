@@ -1,0 +1,57 @@
+SQL> 
+SQL> 
+SQL> describe Orders;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ORDERNUM                                  NOT NULL NUMBER(5)
+ ORDERDATE                                          DATE
+ CUSTOMERNUM                                        NUMBER(5)
+ PRODUCTNUM                                         VARCHAR2(4)
+ ORDERQTY                                           NUMBER(4)
+ SHIPQTY                                            NUMBER(4)
+ UNITPRICE                                          NUMBER(6,2)
+ ORDERAMOUNT                                        NUMBER(6,2)
+ SHIPDATE                                           DATE
+ SHIPAMOUNT                                         NUMBER(6,2)
+ ORDERSTATUS                                        VARCHAR2(15)
+ REASONCODE                                         NUMBER(1)
+
+SQL> 
+SQL> describe Products;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ PRODUCTNUM                                NOT NULL VARCHAR2(4)
+ PRODUCTNAME                                        VARCHAR2(15)
+ UNITPRICE                                          NUMBER(6,2)
+ TYPE                                               VARCHAR2(9)
+ WAREHOUSEUNITS                                     NUMBER(4)
+ AVAILABLEUNITS                                     NUMBER(4)
+
+SQL> 
+SQL> describe ReasonCode;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ REASONCODE                                NOT NULL NUMBER(1)
+ REASONDESCRIPTION                                  VARCHAR2(19)
+
+SQL> 
+SQL> describe Customers;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ CUSTOMERNUM                               NOT NULL NUMBER(5)
+ LASTNAME                                           VARCHAR2(20)
+ FIRSTNAME                                          VARCHAR2(20)
+ ADDRESS                                            VARCHAR2(20)
+ CITY                                               VARCHAR2(20)
+ STATE                                              VARCHAR2(20)
+ ZIP                                                NUMBER(5)
+ PHONE                                              NUMBER(10)
+
+SQL> 
+SQL> describe Counter;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ MAXNUM                                             NUMBER(5)
+
+SQL> 
+SQL> spool off

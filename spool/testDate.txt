@@ -1,0 +1,93 @@
+SQL> 
+SQL> column orderNum heading 'Order|Num' format 9999
+SQL> column orderDate heading 'Order|Date' format date
+SQL> column customerNum heading 'Cust|Num' format 9999
+SQL> column productNum heading 'Prod|Num' format a5
+SQL> column orderStatus heading 'Status' format a10
+SQL> column reasonCode heading 'Reason|Code' format 9
+SQL> 
+SQL> select orderNum,orderDate,customerNum,productNum,orderStatus,reasonCode from Orders;
+
+Order Order      Cust Prod             Reason                                   
+  Num Date        Num Num   Status       Code                                   
+----- --------- ----- ----- ---------- ------                                   
+  999 11-DEC-18   106 p5    Shipped                                             
+ 1000 16-NOV-18   103 p1    Open                                                
+ 1001 01-DEC-18   105 p4    Shipped                                             
+ 1002 25-NOV-18   103 p1    Open                                                
+ 1003 11-NOV-18   106 p5    Shipped                                             
+ 1004 09-DEC-18   105 p1    Open                                                
+ 1005 12-DEC-18   106 p6    Shipped                                             
+ 1006 01-NOV-18   102 p1    Open                                                
+ 1007 05-DEC-18   106 p4    Open                                                
+ 1008 13-DEC-18   102 p5    Open                                                
+
+Order Order      Cust Prod             Reason                                   
+  Num Date        Num Num   Status       Code                                   
+----- --------- ----- ----- ---------- ------                                   
+ 1009 12-NOV-18   102 p5    Open                                                
+ 1010 05-NOV-18   104 p2    Open                                                
+ 1011 09-NOV-18   102 p6    Open                                                
+ 1012 05-NOV-18   106 p6    Open                                                
+ 1013 04-DEC-18   103 p4    Open                                                
+ 1014 13-NOV-18   105 p3    Open                                                
+ 1015 29-NOV-18   103 p6    Open                                                
+ 1016 02-DEC-18   105 p4    Open                                                
+ 1017 18-DEC-18   105 p5    Open                                                
+ 1018 18-DEC-18   102 p2    Open                                                
+
+Order Order      Cust Prod             Reason                                   
+  Num Date        Num Num   Status       Code                                   
+----- --------- ----- ----- ---------- ------                                   
+ 1020 18-DEC-18   102 p6    Shipped                                             
+ 1021 18-DEC-18   104 p7    Open                                                
+ 1022 18-DEC-18   103 p6    Shipped                                             
+ 1023 18-DEC-18   102 p2    Open                                                
+
+24 rows selected.
+
+SQL> 
+SQL> column orderNum heading 'Order|Num' format 999
+SQL> column lastName heading 'Last|Name' format a9
+SQL> column firstName heading 'Fist|Name' format a8
+SQL> column address heading 'Address' format a15
+SQL> column city heading 'City' format a11
+SQL> column state heading 'State' format a5
+SQL> column zip heading 'Zip' format 99999
+SQL> 
+SQL> select customerNum,lastName,firstName,address,city,state,zip,phone from Customers;
+
+ Cust Last      Fist                                                            
+  Num Name      Name     Address         City        State    Zip      PHONE    
+----- --------- -------- --------------- ----------- ----- ------ ----------    
+  102 Jones     Elaine   123 Main Street Los Angeles CA     91001 3235111199    
+  103 Fett      Boba     354 Second Ave. Mos Eisley  FL     84576 5844688424    
+  104 Solo      Han      5872 Park Stree Hoth        TN     68715 6816872347    
+                         t                                                      
+                                                                                
+  105 Skywalker Luke     6547 Esperanza  Tatooine    FL     98716 6589578724    
+  106 Kenobi    Obi-Wan  5345 Jedi Templ Coruscant   GA     95634  876348763    
+                         e Dr.                                                  
+                                                                                
+
+5 rows selected.
+
+SQL> 
+SQL> select * from Products;
+
+Prod                                                                            
+Num   PRODUCTNAME      UNITPRICE TYPE      WAREHOUSEUNITS AVAILABLEUNITS        
+----- --------------- ---------- --------- -------------- --------------        
+p1    Pen                   1.59 Regular             1000            880        
+p2    Pencil                   2 Promo                500            450        
+p3    Ballpen               2.49 Regular              800            700        
+p4    Coffee Cup               5 Promo                500            400        
+p5    75% keyboard            10 Regular              100             90        
+p6    Logitech Mouse       12.23 Promo                400            350        
+p7    Football                13 Regular               75             70        
+
+7 rows selected.
+
+SQL> 
+SQL> 
+SQL> spool off

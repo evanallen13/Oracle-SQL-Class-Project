@@ -1,0 +1,106 @@
+SQL> 
+SQL> prompt
+
+SQL> prompt ***** Welcome to iSell! *****
+***** Welcome to iSell! *****
+SQL> prompt ****** UPDATE SHIPPING ******
+****** UPDATE SHIPPING ******
+SQL> 
+SQL> select 'Todays Date:', sysdate from dual;
+
+'TODAYSDATE: SYSDATE                                                            
+------------ ---------                                                          
+Todays Date: 18-DEC-18                                                          
+
+1 row selected.
+
+SQL> 
+SQL> accept VorderNum prompt 'Please enter the Order Number: '
+Please enter the Order Number: 1012
+SQL> 
+SQL> select 'Order Number: '||orderNum
+  2  	     ||chr(10)||'Date Ordered: '||orderDate
+  3  	     ||chr(10)||'Customer Number: '||Orders.customerNum
+  4  	     ||chr(10)||chr(9)||lastName||', '||firstName
+  5  	     ||chr(10)||chr(9)||address
+  6  	     ||chr(10)||chr(9)||city||','||state||' '||zip
+  7  	     ||chr(10)||'Item Number: '||Orders.productNum
+  8  	     ||chr(10)||chr(9)||'Item Description: '||productName
+  9  	     ||chr(10)||chr(9)||'Unit Price: '||trim(to_char(Orders.UnitPrice,'$9,999.99'))
+ 10  	     ||chr(10)||'Quantity Ordered: '||orderQty
+ 11  	     ||chr(10)||'Amount Ordered: '||trim(to_char(orderAmount,'$9,999.99'))
+ 12  	     from Orders,Customers,Products
+ 13  	     where orderNum = &VorderNum
+ 14  	     and Customers.customerNum = Orders.customerNum
+ 15  	     and Products.productNum = Orders.productNum;
+old  13: 	where orderNum = &VorderNum
+new  13: 	where orderNum = 1012
+
+'ORDERNUMBER:'||ORDERNUM||CHR(10)||'DATEORDERED:'||ORDERDATE||CHR(10)||'CUSTOMER
+--------------------------------------------------------------------------------
+Order Number: 1012                                                              
+Date Ordered: 05-NOV-18                                                         
+Customer Number: 106                                                            
+	Kenobi, Obi-Wan                                                                
+	5345 Jedi Temple Dr.                                                           
+	Coruscant,GA 95634                                                             
+Item Number: p6                                                                 
+	Item Description: Logitech Mouse                                               
+	Unit Price: $12.23                                                             
+Quantity Ordered: 20                                                            
+Amount Ordered: $244.60                                                         
+
+'ORDERNUMBER:'||ORDERNUM||CHR(10)||'DATEORDERED:'||ORDERDATE||CHR(10)||'CUSTOMER
+--------------------------------------------------------------------------------
+                                                                                
+
+1 row selected.
+
+SQL> 
+SQL> prompt *************************
+*************************
+SQL> accept VqtyShipped prompt 'Quantity Shipped: '
+Quantity Shipped: 9
+SQL> 
+SQL> update Orders
+  2  	     set orderStatus = 'Shipped',
+  3  	     shipDate = sysdate,
+  4  	     shipAmount = (&VqtyShipped*(select UnitPrice from Orders where &VorderNum = orderNum))
+  5  	     where orderNum = &VorderNum;
+old   4: 	shipAmount = (&VqtyShipped*(select UnitPrice from Orders where &VorderNum = orderNum))
+new   4: 	shipAmount = (9*(select UnitPrice from Orders where 1012 = orderNum))
+old   5: 	where orderNum = &VorderNum
+new   5: 	where orderNum = 1012
+
+1 row updated.
+
+SQL> 
+SQL> commit;
+
+Commit complete.
+
+SQL> 
+SQL> select 'Order Status: '||orderStatus
+  2  	     ||chr(10)||'Date Shipped: '||shipDate
+  3  	     ||chr(10)||'Quantity Shipped: '||&VqtyShipped
+  4  	     ||chr(10)||'Amount Shipped: '||ltrim(to_char(shipAmount,'$9,999.99'))
+  5  	     from Orders
+  6  	     where &VorderNum = orderNum;
+old   3: 	||chr(10)||'Quantity Shipped: '||&VqtyShipped
+new   3: 	||chr(10)||'Quantity Shipped: '||9
+old   6: 	where &VorderNum = orderNum
+new   6: 	where 1012 = orderNum
+
+'ORDERSTATUS:'||ORDERSTATUS||CHR(10)||'DATESHIPPED:'||SHIPDATE||CHR(10)||'QUANTI
+--------------------------------------------------------------------------------
+Order Status: Shipped                                                           
+Date Shipped: 18-DEC-18                                                         
+Quantity Shipped: 9                                                             
+Amount Shipped: $110.07                                                         
+                                                                                
+
+1 row selected.
+
+SQL> 
+SQL> 
+SQL> spool off

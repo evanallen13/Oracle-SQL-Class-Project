@@ -1,0 +1,200 @@
+SQL> /* start C:\Users\evana\Desktop\moreSql\setup.sql */
+SQL> 
+SQL> drop table CancelledOrders;
+
+Table dropped.
+
+SQL> drop table CancelledReasons;
+
+Table dropped.
+
+SQL> drop table Orders;
+
+Table dropped.
+
+SQL> drop table Customers;
+
+Table dropped.
+
+SQL> drop table Products;
+
+Table dropped.
+
+SQL> drop table Status;
+
+Table dropped.
+
+SQL> drop table counter;
+
+Table dropped.
+
+SQL> 
+SQL> create table Customers(
+  2  	     customerNum number(5) PRIMARY KEY,
+  3  	     firstName varchar(15),
+  4  	     lastName varchar (15),
+  5  	     address varchar (30),
+  6  	     city varchar(20),
+  7  	     state varchar(3),
+  8  	     zip number(5),
+  9  	     phone varchar(14));
+
+Table created.
+
+SQL> 
+SQL> CREATE TABLE Products(
+  2  	     PNum varchar(2) PRIMARY KEY,
+  3  	     PName varchar(20),
+  4  	     UnitPrice number(6,2),
+  5  	     Type varchar(8),
+  6  	     WarehouseUnits number(4),
+  7  	     AvailableUnits number(4));
+
+Table created.
+
+SQL> 
+SQL> CREATE TABLE Status(
+  2  	     StatusNum number(2) PRIMARY KEY,
+  3  	     Status varchar(9));
+
+Table created.
+
+SQL> 
+SQL> CREATE TABLE Orders(
+  2  	     orderNum number(5) PRIMARY KEY,
+  3  	     orderDate date,
+  4  	     dateShipped date,
+  5  	     customerNum number(5),
+  6  	     QtyOrdered number(5),
+  7  	     QtyShipped number(5),
+  8  	     PNum varchar(2),
+  9  	     statusNum number(2),
+ 10  	     amountOrdered number(8,2),
+ 11  	     amountShipped number(8,2),
+ 12  	     constraint fk_Orders_CustomerNum foreign key (customerNum) references Customers (customerNum),
+ 13  	     constraint fk_Orders_PNum foreign key (PNum) references Products (PNum));
+
+Table created.
+
+SQL> 
+SQL> CREATE TABLE CancelledReasons(
+  2  	     cancelledNum number(1) PRIMARY KEY,
+  3  	     cancelledReason varchar(20));
+
+Table created.
+
+SQL> 
+SQL> CREATE TABLE CancelledOrders(
+  2  	     cancelledNum number(1),
+  3  	     orderNum number(5),
+  4  	     cancelledDate date,
+  5  	     constraint fk_CancelledOrders_orderNum foreign key (orderNum) references Orders(orderNum),
+  6  	     constraint fk_CancelledOrders_cancelled foreign key (cancelledNum) references CancelledReasons(cancelledNum));
+
+Table created.
+
+SQL> 
+SQL> CREATE TABLE Counter(
+  2  	     MaxNum number(5));
+
+Table created.
+
+SQL> 
+SQL> /* Insert into counter */
+SQL> insert into Counter values(1004);
+
+1 row created.
+
+SQL> 
+SQL> /* Insert Customers */
+SQL> insert into Customers values(102,'Elaine','Jones','123 Main Street','Los Angeles','CA',91001,'(323) 511-1199');
+
+1 row created.
+
+SQL> insert into Customers values(103,'Boba','Fett','354 Second Ave.','Mos Eisley','FL',84576,'(584) 468-8424');
+
+1 row created.
+
+SQL> insert into Customers values(104,'Han','Solo','5872 Park Street', 'Hoth','TN',68715,'(681) 687-2347');
+
+1 row created.
+
+SQL> insert into Customers values(105,'Luke','Skywalker','6547 Esperanza','Tatooine','FL',98716,'(658) 957-8724');
+
+1 row created.
+
+SQL> 
+SQL> /* Insert Products */
+SQL> insert into Products values('p1','Pen',1.59,'Regular',1000,880);
+
+1 row created.
+
+SQL> insert into Products values('p2','Pencil',2.00,'Promo',500,450);
+
+1 row created.
+
+SQL> insert into Products values('p3','Ballpen',2.49,'Regular',800,700);
+
+1 row created.
+
+SQL> insert into Products values('c1','Coffee Cup',5.00,'Promo',500,400);
+
+1 row created.
+
+SQL> insert into Products values('k1','75% keyboard',10.00,'Regular',100,90);
+
+1 row created.
+
+SQL> 
+SQL> /* Insert Status */
+SQL> insert into Status values(1,'Open');
+
+1 row created.
+
+SQL> insert into Status values(2,'Shipped');
+
+1 row created.
+
+SQL> insert into Status values(3,'Cancelled');
+
+1 row created.
+
+SQL> 
+SQL> /* insert into Cancelled Reason */
+SQL> insert into CancelledReasons values(1,'No longer need');
+
+1 row created.
+
+SQL> insert into CancelledReasons values(2,'Found better price');
+
+1 row created.
+
+SQL> insert into CancelledReasons values(3,'Too long to deliver');
+
+1 row created.
+
+SQL> insert into CancelledReasons values(4,'Others');
+
+1 row created.
+
+SQL> 
+SQL> /* insert into Orders */
+SQL> insert into Orders values (1001,'22-MAR-2018',NUll,102,18,20,'p2',2,36.00,40.00);
+
+1 row created.
+
+SQL> insert into Orders values (1002,'20-MAR-2018','22-MAR-2018',102,17,21,'p3',2,42.33,52.29);
+
+1 row created.
+
+SQL> insert into Orders values (1003,'23-MAR-2018',NULL,103,12,13,'c1',1,23.23,42.42);
+
+1 row created.
+
+SQL> /* insert into Cancelled orders */
+SQL> insert into CancelledOrders values (2,1001,'23-MAR-2018');
+
+1 row created.
+
+SQL> 
+SQL> spool off

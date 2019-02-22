@@ -5,6 +5,8 @@ set heading off
 
 /* start C:\Users\evana\Desktop\project\cancel.sql */
 
+spool C:\Users\evana\Desktop\project\spool\cancel.txt
+
 prompt
 prompt ***** Welcome to iSell! *****
 prompt ***** CANCEL ORDER *****
@@ -37,7 +39,9 @@ prompt ********************************************
 
 set heading on 
 
-select reasonCode As Cancel, reasonDescription As Reason_Code
+column reasonCode heading 'Cancel' format 9
+column reasonDescription heading 'Reason Code' format a19
+select reasonCode , reasonDescription
 	from ReasonCode;
 
 set heading off
@@ -54,3 +58,5 @@ select 'This order is now CANCELLED. Thank you for your business.'
 	from Orders 
 	where &VorderNum = orderNum 
 	and orderStatus = 'Cancelled';
+
+spool off

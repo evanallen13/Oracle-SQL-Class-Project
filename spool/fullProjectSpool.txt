@@ -1,0 +1,1103 @@
+Evan ALllen 
+
+evanallen13@gmail.com 
+
+files- 
+setup.sql
+order.sql 
+shipped.sql
+cancel.sql
+lookup.sql
+salesReport.sql
+whyX.sql 
+
+Tables 
+SQL> describe Orders;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ORDERNUM                                  NOT NULL NUMBER(5)
+ ORDERDATE                                          DATE
+ CUSTOMERNUM                                        NUMBER(5)
+ PRODUCTNUM                                         VARCHAR2(4)
+ ORDERQTY                                           NUMBER(4)
+ SHIPQTY                                            NUMBER(4)
+ UNITPRICE                                          NUMBER(6,2)
+ ORDERAMOUNT                                        NUMBER(6,2)
+ SHIPDATE                                           DATE
+ SHIPAMOUNT                                         NUMBER(6,2)
+ ORDERSTATUS                                        VARCHAR2(15)
+ REASONCODE                                         NUMBER(1)
+
+SQL> 
+SQL> describe Products;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ PRODUCTNUM                                NOT NULL VARCHAR2(4)
+ PRODUCTNAME                                        VARCHAR2(15)
+ UNITPRICE                                          NUMBER(6,2)
+ TYPE                                               VARCHAR2(9)
+ WAREHOUSEUNITS                                     NUMBER(4)
+ AVAILABLEUNITS                                     NUMBER(4)
+
+SQL> 
+SQL> describe ReasonCode;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ REASONCODE                                NOT NULL NUMBER(1)
+ REASONDESCRIPTION                                  VARCHAR2(19)
+
+SQL> 
+SQL> describe Customers;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ CUSTOMERNUM                               NOT NULL NUMBER(5)
+ LASTNAME                                           VARCHAR2(20)
+ FIRSTNAME                                          VARCHAR2(20)
+ ADDRESS                                            VARCHAR2(20)
+ CITY                                               VARCHAR2(20)
+ STATE                                              VARCHAR2(20)
+ ZIP                                                NUMBER(5)
+ PHONE                                              NUMBER(10)
+
+SQL> 
+SQL> describe Counter;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ MAXNUM                                             NUMBER(5)
+
+SQL> 
+SQL> spool off
+
+Test Data
+SQL> 
+SQL> column orderNum heading 'Order|Num' format 9999
+SQL> column orderDate heading 'Order|Date' format date
+SQL> column customerNum heading 'Cust|Num' format 9999
+SQL> column productNum heading 'Prod|Num' format a5
+SQL> column orderStatus heading 'Status' format a10
+SQL> column reasonCode heading 'Reason|Code' format 9
+SQL> 
+SQL> select orderNum,orderDate,customerNum,productNum,orderStatus,reasonCode from Orders;
+
+Order Order      Cust Prod             Reason                                   
+  Num Date        Num Num   Status       Code                                   
+----- --------- ----- ----- ---------- ------                                   
+  999 11-DEC-18   106 p5    Shipped                                             
+ 1000 16-NOV-18   103 p1    Open                                                
+ 1001 01-DEC-18   105 p4    Shipped                                             
+ 1002 25-NOV-18   103 p1    Open                                                
+ 1003 11-NOV-18   106 p5    Shipped                                             
+ 1004 09-DEC-18   105 p1    Open                                                
+ 1005 12-DEC-18   106 p6    Shipped                                             
+ 1006 01-NOV-18   102 p1    Open                                                
+ 1007 05-DEC-18   106 p4    Open                                                
+ 1008 13-DEC-18   102 p5    Open                                                
+
+Order Order      Cust Prod             Reason                                   
+  Num Date        Num Num   Status       Code                                   
+----- --------- ----- ----- ---------- ------                                   
+ 1009 12-NOV-18   102 p5    Open                                                
+ 1010 05-NOV-18   104 p2    Open                                                
+ 1011 09-NOV-18   102 p6    Open                                                
+ 1012 05-NOV-18   106 p6    Open                                                
+ 1013 04-DEC-18   103 p4    Open                                                
+ 1014 13-NOV-18   105 p3    Open                                                
+ 1015 29-NOV-18   103 p6    Open                                                
+ 1016 02-DEC-18   105 p4    Open                                                
+ 1017 18-DEC-18   105 p5    Open                                                
+ 1018 18-DEC-18   102 p2    Open                                                
+
+Order Order      Cust Prod             Reason                                   
+  Num Date        Num Num   Status       Code                                   
+----- --------- ----- ----- ---------- ------                                   
+ 1020 18-DEC-18   102 p6    Shipped                                             
+ 1021 18-DEC-18   104 p7    Open                                                
+ 1022 18-DEC-18   103 p6    Shipped                                             
+ 1023 18-DEC-18   102 p2    Open                                                
+
+24 rows selected.
+
+SQL> 
+SQL> column orderNum heading 'Order|Num' format 999
+SQL> column lastName heading 'Last|Name' format a9
+SQL> column firstName heading 'Fist|Name' format a8
+SQL> column address heading 'Address' format a15
+SQL> column city heading 'City' format a11
+SQL> column state heading 'State' format a5
+SQL> column zip heading 'Zip' format 99999
+SQL> 
+SQL> select customerNum,lastName,firstName,address,city,state,zip,phone from Customers;
+
+ Cust Last      Fist                                                            
+  Num Name      Name     Address         City        State    Zip      PHONE    
+----- --------- -------- --------------- ----------- ----- ------ ----------    
+  102 Jones     Elaine   123 Main Street Los Angeles CA     91001 3235111199    
+  103 Fett      Boba     354 Second Ave. Mos Eisley  FL     84576 5844688424    
+  104 Solo      Han      5872 Park Stree Hoth        TN     68715 6816872347    
+                         t                                                      
+                                                                                
+  105 Skywalker Luke     6547 Esperanza  Tatooine    FL     98716 6589578724    
+  106 Kenobi    Obi-Wan  5345 Jedi Templ Coruscant   GA     95634  876348763    
+                         e Dr.                                                  
+                                                                                
+
+5 rows selected.
+
+SQL> 
+SQL> select * from Products;
+
+Prod                                                                            
+Num   PRODUCTNAME      UNITPRICE TYPE      WAREHOUSEUNITS AVAILABLEUNITS        
+----- --------------- ---------- --------- -------------- --------------        
+p1    Pen                   1.59 Regular             1000            880        
+p2    Pencil                   2 Promo                500            450        
+p3    Ballpen               2.49 Regular              800            700        
+p4    Coffee Cup               5 Promo                500            400        
+p5    75% keyboard            10 Regular              100             90        
+p6    Logitech Mouse       12.23 Promo                400            350        
+p7    Football                13 Regular               75             70        
+
+7 rows selected.
+
+SQL> 
+SQL> 
+SQL> spool off
+
+setup.sql 
+
+set echo on
+set feedback on
+set verify on
+set heading on
+
+/* start C:\Users\evana\Desktop\project\setup.sql */
+spool C:\Users\evana\Desktop\project\spool\setup.txt
+
+drop table Orders;
+drop table Customers;
+drop table ReasonCode;
+drop table Products;
+drop table Counter;
+
+create table Products(
+  productNum varchar2(4) PRIMARY KEY,
+  productName varchar2(15),
+  UnitPrice number(6,2),
+  type varchar2(9),
+  warehouseUnits number(4),
+  availableUnits number(4));
+
+create table ReasonCode(
+  ReasonCode number(1) PRIMARY KEY,
+  ReasonDescription varchar2(19));
+
+create table Customers(
+  customerNum number(5) PRIMARY KEY,
+  lastName varchar2(20),
+  firstName varchar2(20),
+  address varchar2(20),
+  city varchar2(20),
+  state varchar2(20),
+  zip number(5),
+  phone number(10));
+
+create table Counter(
+  maxNum number(5));
+
+create table Orders(
+  orderNum number(5) PRIMARY KEY,
+  orderDate date,
+  customerNum number(5), /* FK */
+  productNum varchar2(4), /* FK */
+  orderQty number(4),
+  shipQty number(4),
+  UnitPrice number(6,2), /* Not FK */
+  orderAmount number(6,2),
+  shipDate date,
+  shipAmount number(6,2),
+  orderStatus varchar2(15),
+  reasonCode number(1), /* FK */
+  constraint fk_Orders_customerNum foreign key (customerNum) references Customers (customerNum),
+  constraint fk_Orders_prodcutNum foreign key (productNum) references Products (productNum),
+  constraint fk_Orders_reasonCode foreign key (reasonCode) references ReasonCode (reasonCode));
+
+/* Insert Products */
+insert into Products values('p1','Pen',1.59,'Regular',1000,880);
+insert into Products values('p2','Pencil',2.00,'Promo',500,450);
+insert into Products values('p3','Ballpen',2.49,'Regular',800,700);
+insert into Products values('p4','Coffee Cup',5.00,'Promo',500,400);
+insert into Products values('p5','75% keyboard',10.00,'Regular',100,90);
+insert into Products values('p6','Logitech Mouse',12.23,'Promo',400,350);
+insert into Products values('p7','Football',13.00,'Regular',75,70);
+
+/* Insert Reasons */
+insert into ReasonCode values(1,'No longer need');
+insert into ReasonCode values(2,'Found better price');
+insert into ReasonCode values(3,'Too long to deliver');
+insert into ReasonCode values(4,'Others');
+
+/* Insert Customers */
+insert into Customers values(102,'Jones','Elaine','123 Main Street','Los Angeles','CA',91001,3235111199);
+insert into Customers values(103,'Fett','Boba','354 Second Ave.','Mos Eisley','FL',84576,5844688424);
+insert into Customers values(104,'Solo','Han','5872 Park Street','Hoth','TN',68715,6816872347);
+insert into Customers values(105,'Skywalker','Luke','6547 Esperanza','Tatooine','FL',98716,6589578724);
+insert into Customers values(106,'Kenobi','Obi-Wan','5345 Jedi Temple Dr.','Coruscant','GA',95634,876348763);
+
+/* Insert Orders */
+insert into Orders values(999,'11-DEC-2018',106,'p5',4,3,10.00,40.00,'12-DEC-2018',30.00,'Open',Null);
+insert into Orders values(1000,'16-NOV-2018',103,'p1',15,13,1.59,23.85,'17-NOV-2018',20.67,'Open',Null);
+insert into Orders values(1001,'01-DEC-2018',105,'p4',29,29,5.00,145.00,'02-DEC-2018',145.00,'Open',Null);
+insert into Orders values(1002,'25-NOV-2018',103,'p1',13,9,1.59,20.67,'26-NOV-2018',14.31,'Open', Null );
+insert into Orders values(1003,'11-NOV-2018',106,'p5',12,9,10.00,120.00,'12-NOV-2018',90.00,'Open',Null);
+insert into Orders values(1004,'09-DEC-2018',105,'p1',16,11,1.59,25.44,'10-DEC-2018',17.49,'Open',Null);
+insert into Orders values(1005,'12-DEC-2018',106,'p6',29,29,12.23,354.67,'18-DEC-2018',354.67,'Open',Null);
+insert into Orders values(1006,'01-NOV-2018',102,'p1',3,2,1.59,4.77,'02-NOV-2018',3.18,'Open',Null);
+insert into Orders values(1007,'05-DEC-2018',106,'p4',1,1,5.00,5.00,'06-DEC-2018',5.00,'Open',Null);
+insert into Orders values(1008,'13-DEC-2018',102,'p5',22,22,10.00,220.00,'14-DEC-2018',220.00,'Open', Null );
+insert into Orders values(1009,'12-NOV-2018',102,'p5',26,26,10.00,260.00,'13-NOV-2018',260.00,'Open',Null);
+insert into Orders values(1010,'05-NOV-2018',104,'p2',18,17,2.00,36.00,'06-NOV-2018',34.00,'Open',Null);
+insert into Orders values(1011,'09-NOV-2018',102,'p6',3,0,12.23,36.69,'10-NOV-2018',0.00,'Open', Null );
+insert into Orders values(1012,'05-NOV-2018',106,'p6',20,19,12.23,244.60,'6-NOV-2018',232.37,'Open',Null);
+insert into Orders values(1013,'04-DEC-2018',103,'p4',6,5,5.00,30.00,'05-DEC-2018',25.00,'Open',Null);
+insert into Orders values(1014,'13-NOV-2018',105,'p3',23,23,2.49,57.27,'14-NOV-2018',57.27,'Open', Null );
+insert into Orders values(1015,'29-NOV-2018',103,'p6',17,14,12.23,207.91,'30-NOV-2018',171.22,'Open',Null);
+insert into Orders values(1016,'02-DEC-2018',105,'p4',17,12,5.00,85.00,'03-DEC-2018',60.00,'Open',Null);
+
+/* Counter */
+insert into Counter values((select max(orderNum) from Orders)+1);
+
+spool off
+
+setup.txt
+SQL> 
+SQL> drop table Orders;
+
+Table dropped.
+
+SQL> drop table Customers;
+
+Table dropped.
+
+SQL> drop table ReasonCode;
+
+Table dropped.
+
+SQL> drop table Products;
+
+Table dropped.
+
+SQL> drop table Counter;
+
+Table dropped.
+
+SQL> 
+SQL> create table Products(
+  2        productNum varchar2(4) PRIMARY KEY,
+  3        productName varchar2(15),
+  4        UnitPrice number(6,2),
+  5        type varchar2(9),
+  6        warehouseUnits number(4),
+  7        availableUnits number(4));
+
+Table created.
+
+SQL> 
+SQL> create table ReasonCode(
+  2        ReasonCode number(1) PRIMARY KEY,
+  3        ReasonDescription varchar2(19));
+
+Table created.
+
+SQL> 
+SQL> create table Customers(
+  2        customerNum number(5) PRIMARY KEY,
+  3        lastName varchar2(20),
+  4        firstName varchar2(20),
+  5        address varchar2(20),
+  6        city varchar2(20),
+  7        state varchar2(20),
+  8        zip number(5),
+  9        phone number(10));
+
+Table created.
+
+SQL> 
+SQL> create table Counter(
+  2        maxNum number(5));
+
+Table created.
+
+SQL> 
+SQL> create table Orders(
+  2        orderNum number(5) PRIMARY KEY,
+  3        orderDate date,
+  4        customerNum number(5), /* FK */
+  5        productNum varchar2(4), /* FK */
+  6        orderQty number(4),
+  7        shipQty number(4),
+  8        UnitPrice number(6,2), /* Not FK */
+  9        orderAmount number(6,2),
+ 10        shipDate date,
+ 11        shipAmount number(6,2),
+ 12        orderStatus varchar2(15),
+ 13        reasonCode number(1), /* FK */
+ 14        constraint fk_Orders_customerNum foreign key (customerNum) references Customers (customerNum),
+ 15        constraint fk_Orders_prodcutNum foreign key (productNum) references Products (productNum),
+ 16        constraint fk_Orders_reasonCode foreign key (reasonCode) references ReasonCode (reasonCode));
+
+Table created.
+
+SQL> 
+SQL> /* Insert Products */
+SQL> insert into Products values('p1','Pen',1.59,'Regular',1000,880);
+
+1 row created.
+
+SQL> insert into Products values('p2','Pencil',2.00,'Promo',500,450);
+
+1 row created.
+
+SQL> insert into Products values('p3','Ballpen',2.49,'Regular',800,700);
+
+1 row created.
+
+SQL> insert into Products values('p4','Coffee Cup',5.00,'Promo',500,400);
+
+1 row created.
+
+SQL> insert into Products values('p5','75% keyboard',10.00,'Regular',100,90);
+
+1 row created.
+
+SQL> insert into Products values('p6','Logitech Mouse',12.23,'Promo',400,350);
+
+1 row created.
+
+SQL> insert into Products values('p7','Football',13.00,'Regular',75,70);
+
+1 row created.
+
+SQL> 
+SQL> /* Insert Reasons */
+SQL> insert into ReasonCode values(1,'No longer need');
+
+1 row created.
+
+SQL> insert into ReasonCode values(2,'Found better price');
+
+1 row created.
+
+SQL> insert into ReasonCode values(3,'Too long to deliver');
+
+1 row created.
+
+SQL> insert into ReasonCode values(4,'Others');
+
+1 row created.
+
+SQL> 
+SQL> /* Insert Customers */
+SQL> insert into Customers values(102,'Jones','Elaine','123 Main Street','Los Angeles','CA',91001,3235111199);
+
+1 row created.
+
+SQL> insert into Customers values(103,'Fett','Boba','354 Second Ave.','Mos Eisley','FL',84576,5844688424);
+
+1 row created.
+
+SQL> insert into Customers values(104,'Solo','Han','5872 Park Street','Hoth','TN',68715,6816872347);
+
+1 row created.
+
+SQL> insert into Customers values(105,'Skywalker','Luke','6547 Esperanza','Tatooine','FL',98716,6589578724);
+
+1 row created.
+
+SQL> insert into Customers values(106,'Kenobi','Obi-Wan','5345 Jedi Temple Dr.','Coruscant','GA',95634,876348763);
+
+1 row created.
+
+SQL> 
+SQL> /* Insert Orders */
+SQL> insert into Orders values(999,'11-DEC-2018',106,'p5',4,3,10.00,40.00,'12-DEC-2018',30.00,'Open',Null);
+
+1 row created.
+
+SQL> insert into Orders values(1000,'16-NOV-2018',103,'p1',15,13,1.59,23.85,'17-NOV-2018',20.67,'Open',Null);
+
+1 row created.
+
+SQL> insert into Orders values(1001,'01-DEC-2018',105,'p4',29,29,5.00,145.00,'02-DEC-2018',145.00,'Open',Null);
+
+1 row created.
+
+SQL> insert into Orders values(1002,'25-NOV-2018',103,'p1',13,9,1.59,20.67,'26-NOV-2018',14.31,'Open', Null );
+
+1 row created.
+
+SQL> insert into Orders values(1003,'11-NOV-2018',106,'p5',12,9,10.00,120.00,'12-NOV-2018',90.00,'Open',Null);
+
+1 row created.
+
+SQL> insert into Orders values(1004,'09-DEC-2018',105,'p1',16,11,1.59,25.44,'10-DEC-2018',17.49,'Open',Null);
+
+1 row created.
+
+SQL> insert into Orders values(1005,'12-DEC-2018',106,'p6',29,29,12.23,354.67,'18-DEC-2018',354.67,'Open',Null);
+
+1 row created.
+
+SQL> insert into Orders values(1006,'01-NOV-2018',102,'p1',3,2,1.59,4.77,'02-NOV-2018',3.18,'Open',Null);
+
+1 row created.
+
+SQL> insert into Orders values(1007,'05-DEC-2018',106,'p4',1,1,5.00,5.00,'06-DEC-2018',5.00,'Open',Null);
+
+1 row created.
+
+SQL> insert into Orders values(1008,'13-DEC-2018',102,'p5',22,22,10.00,220.00,'14-DEC-2018',220.00,'Open', Null );
+
+1 row created.
+
+SQL> insert into Orders values(1009,'12-NOV-2018',102,'p5',26,26,10.00,260.00,'13-NOV-2018',260.00,'Open',Null);
+
+1 row created.
+
+SQL> insert into Orders values(1010,'05-NOV-2018',104,'p2',18,17,2.00,36.00,'06-NOV-2018',34.00,'Open',Null);
+
+1 row created.
+
+SQL> insert into Orders values(1011,'09-NOV-2018',102,'p6',3,0,12.23,36.69,'10-NOV-2018',0.00,'Open', Null );
+
+1 row created.
+
+SQL> insert into Orders values(1012,'05-NOV-2018',106,'p6',20,19,12.23,244.60,'6-NOV-2018',232.37,'Open',Null);
+
+1 row created.
+
+SQL> insert into Orders values(1013,'04-DEC-2018',103,'p4',6,5,5.00,30.00,'05-DEC-2018',25.00,'Open',Null);
+
+1 row created.
+
+SQL> insert into Orders values(1014,'13-NOV-2018',105,'p3',23,23,2.49,57.27,'14-NOV-2018',57.27,'Open', Null );
+
+1 row created.
+
+SQL> insert into Orders values(1015,'29-NOV-2018',103,'p6',17,14,12.23,207.91,'30-NOV-2018',171.22,'Open',Null);
+
+1 row created.
+
+SQL> insert into Orders values(1016,'02-DEC-2018',105,'p4',17,12,5.00,85.00,'03-DEC-2018',60.00,'Open',Null);
+
+1 row created.
+
+SQL> 
+SQL> /* Counter */
+SQL> insert into Counter values((select max(orderNum) from Orders)+1);
+
+1 row created.
+
+SQL> 
+SQL> spool off
+
+order.sql
+set echo off
+set feedback off
+set verify off
+set heading off
+
+/* start C:\Users\evana\Desktop\project\order.sql */
+
+spool C:\Users\evana\Desktop\spool\project\order.txt
+
+column pnum heading 'p#' format a3
+column pname heading PName format a15
+column price heading 'Unit|Price' format $9,999.99
+column type heading 'Type' format a9
+column warehouse heading 'Warehouse|Units' format 9,999
+column available heading 'Available|Units' format 9,999
+
+prompt
+prompt ***** Welcome to iSell! *****
+prompt ****** PLACE AN ORDER *******
+
+select 'Today''s Date:',sysdate from dual;
+
+prompt
+accept VcustomerNum prompt 'Enter the Customer Number: ' 
+select chr(10)||'Customer Name: '||lastName||', '||firstName
+  ||chr(10)||chr(9)||'Shipping Address: '||Address
+  ||chr(10)||chr(9)||'City, State Zip: '||trim(city)||', '||trim(state)||''||trim(zip)
+  ||chr(10)||chr(9)||'Phone: '||'('||substr(phone,1,3)||')'||substr(phone,4,3)||'-'||substr(phone,6,4)
+  from Customers
+  where customerNum = &VcustomerNum;
+
+accept VproductName prompt 'Enter Product Search Keyword: '
+
+set heading on
+select productNum AS pnum,
+  productName AS pname,
+  UnitPrice As price,
+  Type As type,
+  warehouseUnits AS warehouse,
+  availableUnits AS available  
+  from Products 
+  where lower(productName) like trim(lower('%&VproductName%'));
+set heading off
+
+prompt
+accept VproductNum prompt 'Enter the Item Number: ' 
+
+select 'Item Number: '||productNum 
+  ||chr(10)||'Item Description: '||productName
+  ||chr(10)||'Unit Price: '||ltrim(to_char(unitPrice,'$9,999.99'))
+  from Products
+  where Products.productNum = lower('&VproductNum');
+
+accept Vqty prompt 'Enter the quantity ordered: ' 
+
+select 'Amount Ordered: '||ltrim(to_char(&Vqty*UnitPrice,'$9,999.99'))
+  from Products
+  where Products.productNum = lower('&VproductNum');
+
+
+insert into Orders (orderNum,orderDate,customerNum,productNum,orderQty,UnitPrice,orderAmount,orderStatus)
+  select maxNum,sysdate,&VcustomerNum,'&VproductNum',&Vqty,Products.UnitPrice,(Products.UnitPrice*&Vqty),'Open'
+  from counter,Products
+  where '&VproductNum' = productNum;
+
+select '***** Order Status: '||orderStatus
+  ||chr(10)||'***** Order Number is ---->'||chr(9)||maxNum
+  from Orders, counter
+  where Orders.orderNum = maxNum;
+
+update counter set maxNum = maxNum+1;
+commit;
+
+spool off
+
+order.txt
+***** Welcome to iSell! *****
+****** PLACE AN ORDER *******
+
+Today's Date: 13-DEC-18                                                                                                                                                                                                                                                                                     
+
+Enter the Customer Number: 103
+
+                                                                                                                                                                                                                                                                                                            
+Customer Name: Fett, Boba                                                                                                                                                                                                                                                                                   
+  Shipping Address: 354 Second Ave.                                                                                                                                                                                                                                                                          
+  City, State Zip: Mos Eisley, FL84576                                                                                                                                                                                                                                                                       
+  Phone: (584)468-8842                                                                                                                                                                                                                                                                                       
+                                                                                                                                                                                                                                                                                                            
+Enter Product Search Keyword: log
+
+                          Unit           Warehouse Available                                                                                                                                                                                                                                                
+p#  PName                Price Type          Units     Units                                                                                                                                                                                                                                                
+--- --------------- ---------- --------- --------- ---------                                                                                                                                                                                                                                                
+p6  Logitech Mouse      $12.00 Promo           400       350                                                                                                                                                                                                                                                
+
+Enter the Item Number: p6
+
+Item Number: p6                                                                                                                                                                                                                                                                                             
+Item Description: Logitech Mouse                                                                                                                                                                                                                                                                            
+Unit Price: $12.00                                                                                                                                                                                                                                                                                          
+                                                                                                                                                                                                                                                                                                            
+Enter the quantity ordered: 32
+
+Amount Ordered: $384.00                                                                                                                                                                                                                                                                                     
+
+***** Order Status: Open                                                                                                                                                                                                                                                                                    
+***** Order Number is ----> 1019
+
+shipping.sql
+set echo on
+set feedback on
+set verify on
+set heading on
+
+/* start C:\Users\evana\Desktop\project\shipped.sql */
+spool C:\Users\evana\Desktop\project\spool\shipped.txt
+
+prompt
+prompt ***** Welcome to iSell! *****
+prompt ****** UPDATE SHIPPING ******
+
+select 'Todays Date:', sysdate from dual;
+
+accept VorderNum prompt 'Please enter the Order Number: '
+
+select 'Order Number: '||orderNum
+  ||chr(10)||'Date Ordered: '||orderDate
+  ||chr(10)||'Customer Number: '||Orders.customerNum
+  ||chr(10)||chr(9)||lastName||', '||firstName
+  ||chr(10)||chr(9)||address
+  ||chr(10)||chr(9)||city||','||state||' '||zip
+  ||chr(10)||'Item Number: '||Orders.productNum
+  ||chr(10)||chr(9)||'Item Description: '||productName
+  ||chr(10)||chr(9)||'Unit Price: '||trim(to_char(Orders.UnitPrice,'$9,999.99'))
+  ||chr(10)||'Quantity Ordered: '||orderQty
+  ||chr(10)||'Amount Ordered: '||trim(to_char(orderAmount,'$9,999.99'))
+  from Orders,Customers,Products
+  where orderNum = &VorderNum
+  and Customers.customerNum = Orders.customerNum
+  and Products.productNum = Orders.productNum;
+
+prompt *************************
+accept VqtyShipped prompt 'Quantity Shipped: '
+
+update Orders 
+  set orderStatus = 'Shipped',
+  shipDate = sysdate,
+  shipAmount = (&VqtyShipped*(select UnitPrice from Orders where &VorderNum = orderNum))
+  where orderNum = &VorderNum;
+
+commit;
+
+select 'Order Status: '||orderStatus
+  ||chr(10)||'Date Shipped: '||shipDate
+  ||chr(10)||'Quantity Shipped: '||&VqtyShipped
+  ||chr(10)||'Amount Shipped: '||ltrim(to_char(shipAmount,'$9,999.99'))
+  from Orders
+  where &VorderNum = orderNum;
+
+
+spool off
+
+shipping.txt
+SQL> 
+SQL> prompt
+
+SQL> prompt ***** Welcome to iSell! *****
+***** Welcome to iSell! *****
+SQL> prompt ****** UPDATE SHIPPING ******
+****** UPDATE SHIPPING ******
+SQL> 
+SQL> select 'Todays Date:', sysdate from dual;
+
+'TODAYSDATE: SYSDATE                                                            
+------------ ---------                                                          
+Todays Date: 18-DEC-18                                                          
+
+1 row selected.
+
+SQL> 
+SQL> accept VorderNum prompt 'Please enter the Order Number: '
+Please enter the Order Number: 1012
+SQL> 
+SQL> select 'Order Number: '||orderNum
+  2        ||chr(10)||'Date Ordered: '||orderDate
+  3        ||chr(10)||'Customer Number: '||Orders.customerNum
+  4        ||chr(10)||chr(9)||lastName||', '||firstName
+  5        ||chr(10)||chr(9)||address
+  6        ||chr(10)||chr(9)||city||','||state||' '||zip
+  7        ||chr(10)||'Item Number: '||Orders.productNum
+  8        ||chr(10)||chr(9)||'Item Description: '||productName
+  9        ||chr(10)||chr(9)||'Unit Price: '||trim(to_char(Orders.UnitPrice,'$9,999.99'))
+ 10        ||chr(10)||'Quantity Ordered: '||orderQty
+ 11        ||chr(10)||'Amount Ordered: '||trim(to_char(orderAmount,'$9,999.99'))
+ 12        from Orders,Customers,Products
+ 13        where orderNum = &VorderNum
+ 14        and Customers.customerNum = Orders.customerNum
+ 15        and Products.productNum = Orders.productNum;
+old  13:  where orderNum = &VorderNum
+new  13:  where orderNum = 1012
+
+'ORDERNUMBER:'||ORDERNUM||CHR(10)||'DATEORDERED:'||ORDERDATE||CHR(10)||'CUSTOMER
+--------------------------------------------------------------------------------
+Order Number: 1012                                                              
+Date Ordered: 05-NOV-18                                                         
+Customer Number: 106                                                            
+  Kenobi, Obi-Wan                                                                
+  5345 Jedi Temple Dr.                                                           
+  Coruscant,GA 95634                                                             
+Item Number: p6                                                                 
+  Item Description: Logitech Mouse                                               
+  Unit Price: $12.23                                                             
+Quantity Ordered: 20                                                            
+Amount Ordered: $244.60                                                         
+
+'ORDERNUMBER:'||ORDERNUM||CHR(10)||'DATEORDERED:'||ORDERDATE||CHR(10)||'CUSTOMER
+--------------------------------------------------------------------------------
+                                                                                
+
+1 row selected.
+
+SQL> 
+SQL> prompt *************************
+*************************
+SQL> accept VqtyShipped prompt 'Quantity Shipped: '
+Quantity Shipped: 9
+SQL> 
+SQL> update Orders
+  2        set orderStatus = 'Shipped',
+  3        shipDate = sysdate,
+  4        shipAmount = (&VqtyShipped*(select UnitPrice from Orders where &VorderNum = orderNum))
+  5        where orderNum = &VorderNum;
+old   4:  shipAmount = (&VqtyShipped*(select UnitPrice from Orders where &VorderNum = orderNum))
+new   4:  shipAmount = (9*(select UnitPrice from Orders where 1012 = orderNum))
+old   5:  where orderNum = &VorderNum
+new   5:  where orderNum = 1012
+
+1 row updated.
+
+SQL> 
+SQL> commit;
+
+Commit complete.
+
+SQL> 
+SQL> select 'Order Status: '||orderStatus
+  2        ||chr(10)||'Date Shipped: '||shipDate
+  3        ||chr(10)||'Quantity Shipped: '||&VqtyShipped
+  4        ||chr(10)||'Amount Shipped: '||ltrim(to_char(shipAmount,'$9,999.99'))
+  5        from Orders
+  6        where &VorderNum = orderNum;
+old   3:  ||chr(10)||'Quantity Shipped: '||&VqtyShipped
+new   3:  ||chr(10)||'Quantity Shipped: '||9
+old   6:  where &VorderNum = orderNum
+new   6:  where 1012 = orderNum
+
+'ORDERSTATUS:'||ORDERSTATUS||CHR(10)||'DATESHIPPED:'||SHIPDATE||CHR(10)||'QUANTI
+--------------------------------------------------------------------------------
+Order Status: Shipped                                                           
+Date Shipped: 18-DEC-18                                                         
+Quantity Shipped: 9                                                             
+Amount Shipped: $110.07                                                         
+                                                                                
+
+1 row selected.
+
+SQL> 
+SQL> 
+SQL> spool off
+
+cancel.sql
+
+set echo off
+set feedback off
+set verify off
+set heading off
+
+/* start C:\Users\evana\Desktop\project\cancel.sql */
+
+spool C:\Users\evana\Desktop\project\spool\cancel.txt
+
+prompt
+prompt ***** Welcome to iSell! *****
+prompt ***** CANCEL ORDER *****
+prompt
+
+select 'Today''s date: '||sysdate from dual;
+
+accept VorderNum prompt 'Please enter the Order Number: '
+prompt
+
+select 'Order Number: '||orderNum
+  ||chr(10)||'Date Ordered: '||orderDate
+  ||chr(10)||'Order Status: '||orderStatus
+  ||chr(10)||'Customer Number: '||Orders.customerNum
+  ||chr(10)||chr(9)||lastName||', '||firstName 
+  ||chr(10)||chr(9)||address
+  ||chr(10)||chr(9)||city||', '||state||' '||zip
+  ||chr(10)||chr(9)||'('||substr(phone,1,3)||')'||substr(phone,4,3)||'-'||substr(phone,7,4)
+  ||chr(10)||'Item Number: '||Orders.productNum
+  ||chr(10)||chr(9)||'Item Description: '||productName 
+  ||chr(10)||chr(9)||'Unit Price: '||Orders.UnitPrice
+  ||chr(10)||'Quantity Ordered: '||orderQty
+  ||chr(10)||'Amount Ordered: '||orderAmount
+  from Orders, Customers, Products
+  where Orders.orderNum = &VorderNum
+  and Orders.customerNum = Customers.customerNum
+  and Orders.productNum = Products.productNum;
+
+prompt ********************************************
+
+set heading on 
+
+column reasonCode heading 'Cancel' format 9
+column reasonDescription heading 'Reason Code' format a19
+select reasonCode , reasonDescription
+  from ReasonCode;
+
+set heading off
+
+prompt
+accept Vreason prompt 'Please enter a reason code: '
+
+update Orders 
+  set orderStatus = 'Cancelled',
+  reasonCode = &Vreason
+  where orderNum = &VorderNum;
+
+select 'This order is now CANCELLED. Thank you for your business.'
+  from Orders 
+  where &VorderNum = orderNum 
+  and orderStatus = 'Cancelled';
+
+spool off
+
+cancel.txt
+
+***** Welcome to iSell! *****
+***** CANCEL ORDER *****
+
+
+Today's date: 18-DEC-18                                                         
+Please enter the Order Number: 1013
+
+
+Order Number: 1013                                                              
+Date Ordered: 04-DEC-18                                                         
+Order Status: Open                                                              
+Customer Number: 103                                                            
+  Fett, Boba                                                                     
+  354 Second Ave.                                                                
+  Mos Eisley, FL 84576                                                           
+  (584)468-8424                                                                  
+Item Number: p4                                                                 
+  Item Description: Coffee Cup                                                   
+  Unit Price: 5                                                                  
+Quantity Ordered: 6                                                             
+Amount Ordered: 30                                                              
+
+                                                                                
+********************************************
+
+Cancel Reason Code                                                              
+------ -------------------                                                      
+     1 No longer need                                                           
+     2 Found better price                                                       
+     3 Too long to deliver                                                      
+     4 Others                                                                   
+
+Please enter a reason code: 3
+
+This order is now CANCELLED. Thank you for your business. 
+
+lookup.sql
+
+set echo off
+set feedback off
+set verify off
+set heading off
+
+/* start C:\Users\evana\Desktop\project\lookup.sql */
+spool C:\Users\evana\Desktop\project\spool\lookup.txt
+
+prompt 
+prompt ***** Welcome to iSell! *****
+prompt ****** SHOW ORDER DETAIL ******
+prompt 
+
+accept VorderNum prompt 'Please enter the Order Number: '
+
+select 'Order Number: '||orderNum
+  ||'Order Status: '||orderStatus
+  ||''
+  ||chr(10)||'Customer Number: '||Orders.CustomerNum
+  ||chr(10)||chr(9)||lastName||','||firstName
+  ||chr(10)||chr(9)||address
+  ||chr(10)||chr(9)||city||', '||state||' '||zip
+  ||chr(10)||chr(9)||'('||substr(phone,1,3)||')'||substr(phone,4,3)||'-'||substr(phone,6,4)
+  ||chr(10)||' '
+  ||chr(10)||'Item Number: '||Orders.productNum
+  ||chr(10)||chr(9)||'Item Description: '||productName
+  ||chr(10)||chr(9)||'Unit Price: '||Orders.UnitPrice 
+  ||chr(10)||''
+  ||chr(10)||'Date Ordered: '||orderDate 
+  ||chr(10)||'Date Shipped: '||shipDate
+  ||chr(10)||' '
+  ||chr(10)||'Quantity Ordered: '||orderQty
+  ||chr(10)||'Amount Ordered: '||ltrim(to_char(orderAmount,'$9,999.99'))
+  ||chr(10)||'Quantity Shipped: '||shipQty
+  ||chr(10)||'Amount Shipped: '||ltrim(to_char(shipAmount,'$9,999.99'))
+  from Orders,Customers,Products 
+  where Orders.orderNum = &VorderNum
+  and Orders.CustomerNum = Customers.CustomerNum
+  and Orders.productNum = Products.productNum;
+
+spool off
+
+lookup.txt
+
+***** Welcome to iSell! *****
+****** SHOW ORDER DETAIL ******
+
+Please enter the Order Number: 1005
+
+Order Number: 1005Order Status: Shipped                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+Customer Number: 106                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+  Kenobi,Obi-Wan                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+  5345 Jedi Temple Dr.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+  Coruscant, GA 95634                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+  (876)348-8763                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+Item Number: p6                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+  Item Description: Logitech Mouse                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+  Unit Price: 12.23                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+Date Ordered: 12-DEC-18                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+Date Shipped: 13-DEC-18                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+Quantity Ordered: 29                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+Amount Ordered: $354.67                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+Quantity Shipped: 29                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+Amount Shipped: $354.67                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+salesReport.sql
+
+set echo on
+set feedback on
+set verify on
+set heading on
+
+/* start C:\Users\evana\Desktop\project\salesReport.sql */
+
+spool C:\Users\evana\Desktop\project\spool\salesReport.txt
+
+column numOfOrders heading 'No of |Orders' format 9999
+column productNum heading 'Prod|No' format a5
+column productName heading 'Product|Name' format a15
+column monthYear heading 'Order|Month' format a6
+column totalUnits heading 'Total|Units' format 9,999
+column totalAmount heading 'Total|Amount' format $9,999.99
+
+prompt 
+prompt ****** SALES REPORT ******
+
+set heading on 
+select Orders.productNum,
+  to_char(orderDate,'mm/yy') As monthYear,
+  productName,
+  count(orderNum) As numOfOrders,
+  sum(orderQty) As totalUnits,
+  sum(orderAmount) As totalAmount
+  from Products,Orders 
+  where Orders.productNum = Products.productNum
+  and (orderStatus = 'Open' OR orderStatus = 'Shipped')
+  group by Orders.productNum,productName,to_char(orderDate,'mm/yy');
+
+set heading off
+
+spool off
+
+salesReport.txt
+
+SQL> 
+SQL> column numOfOrders heading 'No of |Orders' format 9999
+SQL> column productNum heading 'Prod|No' format a5
+SQL> column productName heading 'Product|Name' format a15
+SQL> column monthYear heading 'Order|Month' format a6
+SQL> column totalUnits heading 'Total|Units' format 9,999
+SQL> column totalAmount heading 'Total|Amount' format $9,999.99
+SQL> 
+SQL> prompt
+
+SQL> prompt ****** SALES REPORT ******
+****** SALES REPORT ******
+SQL> 
+SQL> set heading on
+SQL> select Orders.productNum,
+  2        to_char(orderDate,'mm/yy') As monthYear,
+  3        productName,
+  4        count(orderNum) As numOfOrders,
+  5        sum(orderQty) As totalUnits,
+  6        sum(orderAmount) As totalAmount
+  7        from Products,Orders
+  8        where Orders.productNum = Products.productNum
+  9        and (orderStatus = 'Open' OR orderStatus = 'Shipped')
+ 10        group by Orders.productNum,productName,to_char(orderDate,'mm/yy');
+
+Prod  Order  Product         No of   Total      Total                           
+No    Month  Name            Orders  Units     Amount                           
+----- ------ --------------- ------ ------ ----------                           
+p6    12/18  Logitech Mouse       1     29    $354.67                           
+p1    11/18  Pen                  3     31     $49.29                           
+p5    11/18  75% keyboard         2     38    $380.00                           
+p1    12/18  Pen                  1     16     $25.44                           
+p5    12/18  75% keyboard         2     26    $260.00                           
+p3    11/18  Ballpen              1     23     $57.27                           
+p4    12/18  Coffee Cup           3     47    $235.00                           
+p2    11/18  Pencil               1     18     $36.00                           
+p6    11/18  Logitech Mouse       3     40    $489.20                           
+
+9 rows selected.
+
+SQL> 
+SQL> set heading off
+SQL> 
+SQL> spool off
+
+whyX.sql
+
+set echo off
+set feedback off
+set verify off
+set heading off
+
+/* start C:\Users\evana\Desktop\project\whyX.sql */
+
+spool C:\Users\evana\Desktop\project\spool\whyX.txt
+
+column reasonCode heading 'Reason|Code' format 9999
+column ReasonDescription heading 'Reason|Description' format a20
+column numberCancelled heading 'No of |Orders' format 9,999
+column qtyCancelled heading 'Total |Units' format 9,999
+column amountCancelled heading 'Total |Amount' format $9,999.99
+
+prompt ****** Cancel Reason Code Analysis ******
+
+accept VnumDays prompt 'Please enter past number of days to query: '
+
+set heading on
+select Orders.reasonCode,
+  ReasonDescription,
+  count(orderNum) AS numberCancelled,
+  sum(orderQty) AS qtyCancelled,
+  sum(orderAmount) AS amountCancelled
+  from Orders,ReasonCode
+  where orderStatus = 'Cancelled'
+  and Orders.ReasonCode = ReasonCode.ReasonCode
+  and (trunc(sysdate)-trunc(orderDate)+1) <= &VnumDays
+  group by Orders.reasonCode,ReasonDescription;
+
+spool off
+
+whyX.txt
+
+SQL> 
+SQL> column reasonCode heading 'Reason|Code' format 9999
+SQL> column ReasonDescription heading 'Reason|Description' format a20
+SQL> column numberCancelled heading 'No of |Orders' format 9,999
+SQL> column qtyCancelled heading 'Total |Units' format 9,999
+SQL> column amountCancelled heading 'Total |Amount' format $9,999.99
+SQL> 
+SQL> prompt ****** Cancel Reason Code Analysis ******
+****** Cancel Reason Code Analysis ******
+SQL> 
+SQL> accept VnumDays prompt 'Please enter past number of days to query: '
+Please enter past number of days to query: 30
+SQL> 
+SQL> set heading on
+SQL> select Orders.reasonCode,
+  2        ReasonDescription,
+  3        count(orderNum) AS numberCancelled,
+  4        sum(orderQty) AS qtyCancelled,
+  5        sum(orderAmount) AS amountCancelled
+  6        from Orders,ReasonCode
+  7        where orderStatus = 'Cancelled'
+  8        and Orders.ReasonCode = ReasonCode.ReasonCode
+  9        and (trunc(sysdate)-trunc(orderDate)+1) <= &VnumDays
+ 10        group by Orders.reasonCode,ReasonDescription;
+old   9:  and (trunc(sysdate)-trunc(orderDate)+1) <= &VnumDays
+new   9:  and (trunc(sysdate)-trunc(orderDate)+1) <= 30
+
+Reason Reason               No of  Total      Total                             
+  Code Description          Orders  Units     Amount                            
+------ -------------------- ------ ------ ----------                            
+     3 Too long to deliver       1      6     $30.00                            
+
+1 row selected.
+
+SQL> 
+SQL> spool off

@@ -1,9 +1,10 @@
 set echo on
 set feedback on
-set verify off
-set heading off
+set verify on
+set heading on
 
 /* start C:\Users\evana\Desktop\project\shipped.sql */
+spool C:\Users\evana\Desktop\project\spool\shipped.txt
 
 prompt
 prompt ***** Welcome to iSell! *****
@@ -21,19 +22,17 @@ select 'Order Number: '||orderNum
 	||chr(10)||chr(9)||city||','||state||' '||zip
 	||chr(10)||'Item Number: '||Orders.productNum
 	||chr(10)||chr(9)||'Item Description: '||productName
-	||chr(10)||chr(9)||'Unit Price: '||Orders.UnitPrice 
+	||chr(10)||chr(9)||'Unit Price: '||trim(to_char(Orders.UnitPrice,'$9,999.99'))
 	||chr(10)||'Quantity Ordered: '||orderQty
-	||chr(10)||'Amount Ordered: '||orderAmount
+	||chr(10)||'Amount Ordered: '||trim(to_char(orderAmount,'$9,999.99'))
 	from Orders,Customers,Products
 	where orderNum = &VorderNum
 	and Customers.customerNum = Orders.customerNum
 	and Products.productNum = Orders.productNum;
 
 prompt *************************
-
 accept VqtyShipped prompt 'Quantity Shipped: '
 
-/* Fix this */
 update Orders 
 	set orderStatus = 'Shipped',
 	shipDate = sysdate,
@@ -50,3 +49,4 @@ select 'Order Status: '||orderStatus
 	where &VorderNum = orderNum;
 
 
+spool off
